@@ -120,9 +120,15 @@ rewrites `project-conventions.md`.
 ## Stretch goals (not implemented)
 
 The base spec's stretch goals — replacing the frequency counter with a
-Claude-based summarizer/deduplicator, an `instructionMode`
-(`strict`/`advisory`/`off`) setting, and a DynamoDB/S3-backed store for a
-Bedrock Agents port — were left for follow-up work; the base PoC's
-acceptance criteria don't require them, and keeping the ranking/storage
-layer pure-local keeps this PoC's zero-network-except-Claude-calls property
-easy to verify.
+Claude-based summarizer/deduplicator, and an `instructionMode`
+(`strict`/`advisory`/`off`) setting — were left for follow-up work; the base
+PoC's acceptance criteria don't require them.
+
+**Storage is file-based only, by design, not just as a stretch-goal
+default.** The original spec floated swapping the file store for
+DynamoDB/S3 to validate the pattern for a Bedrock Agents port; that option
+is intentionally out of scope here. `ReflectiveMemory` and `SkillGenerator`
+persist exclusively to markdown/JSON files plus a local git repo — no
+database, managed or otherwise. This keeps the whole self-improvement layer
+inspectable with plain `cat`/`git log`, dependency-free, and trivially
+portable (copy the `.agent-memory`/`.agent-skills` directories anywhere).
